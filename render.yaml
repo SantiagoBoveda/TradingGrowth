@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tradinggrowth
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -e . && pip install fastapi uvicorn python-dotenv
+    startCommand: python webapp/main.py
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false          # se carga manualmente en Render dashboard
+      - key: ALPHA_VANTAGE_API_KEY
+        sync: false
+      - key: PORT
+        value: 8000

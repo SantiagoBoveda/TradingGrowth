@@ -74,6 +74,20 @@ class GraphSetup:
             delete_nodes["fundamentals"] = create_msg_delete()
             tool_nodes["fundamentals"] = self.tool_nodes["fundamentals"]
 
+        if "macro" in selected_analysts:
+            analyst_nodes["macro"] = create_macro_analyst(
+                self.quick_thinking_llm
+            )
+            delete_nodes["macro"] = create_msg_delete()
+            tool_nodes["macro"] = self.tool_nodes["macro"]
+
+        if "earnings" in selected_analysts:
+            analyst_nodes["earnings"] = create_earnings_analyst(
+                self.quick_thinking_llm
+            )
+            delete_nodes["earnings"] = create_msg_delete()
+            tool_nodes["earnings"] = self.tool_nodes["earnings"]
+
         # Create researcher and manager nodes
         bull_researcher_node = create_bull_researcher(self.quick_thinking_llm)
         bear_researcher_node = create_bear_researcher(self.quick_thinking_llm)

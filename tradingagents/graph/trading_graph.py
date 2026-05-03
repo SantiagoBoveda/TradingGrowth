@@ -39,6 +39,10 @@ from tradingagents.agents.utils.agent_utils import (
     get_global_news
 )
 
+from tradingagents.agents.utils.macro_tools import get_macro_indicators, get_sector_performance
+from tradingagents.agents.utils.earnings_tools import get_earnings_data
+from tradingagents.agents.utils.news_data_tools import get_newsapi_news, get_stocktwits_sentiment, get_reddit_sentiment
+
 from .checkpointer import checkpoint_step, clear_checkpoint, get_checkpointer, thread_id
 from .conditional_logic import ConditionalLogic
 from .setup import GraphSetup
@@ -163,29 +167,19 @@ class TradingAgentsGraph:
                     get_indicators,
                 ]
             ),
-            "social": ToolNode(
-                [
-                    # News tools for social media analysis
-                    get_news,
-                ]
-            ),
-            "news": ToolNode(
-                [
-                    # News and insider information
-                    get_news,
-                    get_global_news,
-                    get_insider_transactions,
-                ]
-            ),
+            "social": ToolNode([get_news, get_stocktwits_sentiment, get_reddit_sentiment]),
+            "news": ToolNode([get_news, get_global_news, get_insider_transactions, get_newsapi_news]),
             "fundamentals": ToolNode(
                 [
-                    # Fundamental analysis tools
                     get_fundamentals,
                     get_balance_sheet,
                     get_cashflow,
                     get_income_statement,
+                    get_insider_transactions,
                 ]
             ),
+            "macro": ToolNode([get_macro_indicators, get_sector_performance, get_global_news]),
+            "earnings": ToolNode([get_earnings_data, get_news]),
         }
 
     def _fetch_returns(
@@ -356,6 +350,8 @@ class TradingAgentsGraph:
             "sentiment_report": final_state["sentiment_report"],
             "news_report": final_state["news_report"],
             "fundamentals_report": final_state["fundamentals_report"],
+            "macro_report": final_state.get("macro_report", ""),
+            "earnings_report": final_state.get("earnings_report", ""),
             "investment_debate_state": {
                 "bull_history": final_state["investment_debate_state"]["bull_history"],
                 "bear_history": final_state["investment_debate_state"]["bear_history"],

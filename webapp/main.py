@@ -190,7 +190,7 @@ def analyze(req: AnalyzeRequest):
 
         reports = {
             k.replace("_report", ""): state.get(k, "")
-            for k in ["market_report", "fundamentals_report", "sentiment_report", "news_report"]
+            for k in ["market_report", "fundamentals_report", "sentiment_report", "news_report", "macro_report", "earnings_report"]
             if state.get(k) and len(state.get(k, "")) > 20
         }
 

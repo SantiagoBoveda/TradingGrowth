@@ -360,8 +360,10 @@ select option { background: var(--surface2); }
       <div class="form-group">
         <label>Analistas</label>
         <select id="analysts">
-          <option value="all">4 Analistas (completo)</option>
+          <option value="all">6 Analistas (completo)</option>
+          <option value="core4">4 Analistas (clásico)</option>
           <option value="fast">2 Analistas (rápido)</option>
+          <option value="macro">Macro + Fundamentals</option>
         </select>
       </div>
       <div class="form-group">
@@ -436,12 +438,16 @@ select option { background: var(--surface2); }
       <button class="tab-btn" onclick="switchTab('fundamentals')">📊 Fundamentals</button>
       <button class="tab-btn" onclick="switchTab('news')">📰 Noticias</button>
       <button class="tab-btn" onclick="switchTab('sentiment')">💬 Sentimiento</button>
+      <button class="tab-btn" onclick="switchTab('macro')">🌍 Macro</button>
+      <button class="tab-btn" onclick="switchTab('earnings')">💰 Earnings</button>
       <button class="tab-btn" onclick="switchTab('plan')">🎯 Plan del Trader</button>
     </div>
     <div class="tab-content active" id="tab-market"></div>
     <div class="tab-content"        id="tab-fundamentals"></div>
     <div class="tab-content"        id="tab-news"></div>
     <div class="tab-content"        id="tab-sentiment"></div>
+    <div class="tab-content"        id="tab-macro"></div>
+    <div class="tab-content"        id="tab-earnings"></div>
     <div class="tab-content"        id="tab-plan"></div>
   </div>
 
@@ -677,7 +683,7 @@ function renderMetrics(data) {
 
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => {
-    const names = ['market','fundamentals','news','sentiment','plan'];
+    const names = ['market','fundamentals','news','sentiment','macro','earnings','plan'];
     b.classList.toggle('active', names[i] === name);
   });
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -722,9 +728,13 @@ async function runAnalysis() {
 
   if (!ticker || !date) { alert('Ingresá ticker y fecha'); return; }
 
-  const analysts = analSel === 'fast'
-    ? ['market','fundamentals']
-    : ['market','news','fundamentals','social'];
+  const analystMap = {
+    'all':   ['market','news','fundamentals','social','macro','earnings'],
+    'core4': ['market','news','fundamentals','social'],
+    'fast':  ['market','fundamentals'],
+    'macro': ['macro','fundamentals'],
+  };
+  const analysts = analystMap[analSel] || analystMap['all'];
 
   document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('loading').style.display = 'block';
@@ -786,6 +796,8 @@ function renderResults(data) {
   setTabContent('tab-fundamentals', data.reports.fundamentals || '');
   setTabContent('tab-news',         data.reports.news         || '');
   setTabContent('tab-sentiment',    data.reports.sentiment    || '');
+  setTabContent('tab-macro',        data.reports.macro        || '');
+  setTabContent('tab-earnings',     data.reports.earnings     || '');
   setTabContent('tab-plan',         data.trader_plan          || '');
 
   document.getElementById('bt-ticker').value = data.ticker;

@@ -3,6 +3,8 @@ from .utils.agent_states import AgentState, InvestDebateState, RiskDebateState
 
 from .analysts.fundamentals_analyst import create_fundamentals_analyst
 from .analysts.market_analyst import create_market_analyst
+from .analysts.macro_analyst import create_macro_analyst
+from .analysts.earnings_analyst import create_earnings_analyst
 from .analysts.news_analyst import create_news_analyst
 from .analysts.social_media_analyst import create_social_media_analyst
 
@@ -34,5 +36,7 @@ __all__ = [
     "create_portfolio_manager",
     "create_conservative_debator",
     "create_social_media_analyst",
+    "create_macro_analyst",
+    "create_earnings_analyst",
     "create_trader",
 ]

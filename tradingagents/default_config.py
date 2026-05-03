@@ -13,8 +13,8 @@ DEFAULT_CONFIG = {
     "memory_log_max_entries": None,
     # LLM settings
     "llm_provider": "google",
-    "deep_think_llm": "gemini-1.5-flash",
-    "quick_think_llm": "gemini-1.5-flash",
+    "deep_think_llm": "gemini-2.0-flash",
+    "quick_think_llm": "gemini-2.0-flash",
     # When None, each provider's client falls back to its own default endpoint
     # (api.openai.com for OpenAI, generativelanguage.googleapis.com for Gemini, ...).
     # The CLI overrides this per provider when the user picks one. Keeping a
